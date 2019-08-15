@@ -208,7 +208,8 @@ class DCGAN:
             r, c = 5, 5
         else:
             r, c = 1, self.n_fixed
-        noise = noise or np.random.normal(0, 1, (r * c, self.latent_dim))
+        if noise is None:
+            noise = np.random.normal(0, 1, (r * c, self.latent_dim))
         gen_imgs = self.generator.predict(noise)
 
         # Rescale images 0 - 1
