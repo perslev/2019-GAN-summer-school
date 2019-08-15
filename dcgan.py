@@ -217,5 +217,5 @@ class DCGAN:
                     axs[i, j].imshow(g_im)
                     axs[i, j].axis('off')
                 cnt += 1
-        fig.savefig(f"{out_dir}/image_%d.png" % str(epoch).zfill(7), dpi=170)
+        fig.savefig(f"{out_dir}/image_%s.png" % str(epoch).zfill(7), dpi=170)
         plt.close(fig)
