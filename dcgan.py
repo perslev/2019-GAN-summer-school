@@ -88,6 +88,10 @@ class DCGAN:
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
 
+        # model.add(Conv2D(128, kernel_size=3, padding="same"))
+        # model.add(LeakyReLU(alpha=0.2))
+        # model.add(BatchNormalization(momentum=0.8))
+
         model.add(Conv2D(64, kernel_size=3, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
@@ -136,7 +140,8 @@ class DCGAN:
 
         return Model(img, validity)
 
-    def train(self, X_train, epochs, batch_size=128, save_interval=10):
+    def train(self, X_train, epochs, batch_size=128,
+              save_interval=10, save_fixed_interval=1):
 
         # Rescale -1 to 1
         X_train = X_train / 127.5 - 1.
@@ -182,10 +187,9 @@ class DCGAN:
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch, out_dir=self.image_dir)
-                if self.n_fixed:
-                    self.save_imgs(epoch,
-                                   out_dir=self.fixed_dir,
-                                   noise=noise_vec)
+            if self.n_fixed and epochs % save_fixed_interval == 0:
+                self.save_imgs(epoch, out_dir=self.fixed_dir,
+                               noise=noise_vec)
 
     def save_imgs(self, epoch, out_dir, noise=None):
         if noise is None:

@@ -2,3 +2,7 @@
 output_images
 .DS_Store
 .idea
+__pycache__
+Icon*
+output_images*
+images_rezised
