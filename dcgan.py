@@ -198,7 +198,7 @@ class DCGAN:
         # Rescale images 0 - 1
         gen_imgs = 0.5 * gen_imgs + 0.5
 
-        fig, axs = plt.subplots(r, c, figsize=(12, 12))
+        fig, axs = plt.subplots(r, c, figsize=(12, 12 if c == 5 else 4))
         cnt = 0
         for i in range(r):
             for j in range(c):
