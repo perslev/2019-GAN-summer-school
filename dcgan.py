@@ -210,8 +210,12 @@ class DCGAN:
                 g_im = gen_imgs[cnt]
                 if g_im.min() < 0 or g_im.max() > 1:
                     print(g_im.min(), g_im.max(), np.any(np.isnan(g_im)))
-                axs[i, j].imshow(g_im)
-                axs[i, j].axis('off')
+                if r == 1:
+                    axs[i].imshow(g_im)
+                    axs[i].axis('off')
+                else:
+                    axs[i, j].imshow(g_im)
+                    axs[i, j].axis('off')
                 cnt += 1
         fig.savefig(f"{out_dir}/image_%d.png" % epoch, dpi=170)
         plt.close(fig)
