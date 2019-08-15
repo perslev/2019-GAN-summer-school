@@ -211,8 +211,8 @@ class DCGAN:
                 if g_im.min() < 0 or g_im.max() > 1:
                     print(g_im.min(), g_im.max(), np.any(np.isnan(g_im)))
                 if r == 1:
-                    axs[i].imshow(g_im)
-                    axs[i].axis('off')
+                    axs[j].imshow(g_im)
+                    axs[j].axis('off')
                 else:
                     axs[i, j].imshow(g_im)
                     axs[i, j].axis('off')
