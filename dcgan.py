@@ -29,8 +29,8 @@ class DCGAN:
         self.image_dir = os.path.join(out_dir, "random_samples")
         self.fixed_dir = os.path.join(out_dir, "fixed_samples")
         to_make = (self.out_dir, self.image_dir, self.fixed_dir)
-        for dir_ in to_make if n_fixed else to_make[:-1]:
-            if not os.path.exists(to_make):
+        for dir_ in (to_make if n_fixed else to_make[:-1]):
+            if not os.path.exists(dir_):
                 os.mkdir(dir_)
 
         optimizer = Adam(0.0002, 0.5)
