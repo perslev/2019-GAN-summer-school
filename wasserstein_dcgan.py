@@ -6,6 +6,7 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.models import Sequential, Model
 from keras.optimizers import Adam
+from keras.optimizers import RMSprop
 from keras import backend as K
 
 import matplotlib.pyplot as plt
@@ -37,7 +38,7 @@ class DCGAN:
             if not os.path.exists(dir_):
                 os.mkdir(dir_)
 
-        optimizer = Adam(0.0002, 0.5)
+        optimizer = RMSprop(lr=0.00005)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
@@ -62,7 +63,8 @@ class DCGAN:
         # Trains the generator to fool the discriminator
         self.combined = Model(z, valid)
         self.combined.compile(loss=self.wasserstein_loss,
-                              optimizer=optimizer)
+                              optimizer=optimizer,
+                              metrics=['accuracy'])
 
     def wasserstein_loss(self, y_true, y_pred):
         return K.mean(y_true * y_pred)
@@ -180,8 +182,7 @@ class DCGAN:
                 # Clip critic weights
                 for l in self.discriminator.layers:
                     weights = l.get_weights()
-                    weights = [np.clip(w, -self.clip_value,
-                                       self.clip_value) for w in weights]
+                    weights = [np.clip(w, -self.clip_value, self.clip_value) for w in weights]
                     l.set_weights(weights)
 
             # ---------------------
@@ -222,8 +223,14 @@ class DCGAN:
                 g_im = gen_imgs[cnt]
                 if g_im.min() < 0 or g_im.max() > 1:
                     print(g_im.min(), g_im.max(), np.any(np.isnan(g_im)))
-                axs[i, j].imshow(g_im)
-                axs[i, j].axis('off')
+
+                if r == 1:
+                    axs[j].imshow(g_im)
+                    axs[j].axis('off')
+                else:
+                    axs[i, j].imshow(g_im)
+                    axs[i, j].axis('off')                    
                 cnt += 1
         fig.savefig(f"{out_dir}/image_%d.png" % epoch, dpi=170)
         plt.close(fig)
+        fig.clf()
