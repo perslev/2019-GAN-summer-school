@@ -187,7 +187,7 @@ class DCGAN:
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch, out_dir=self.image_dir)
-            if self.n_fixed and epochs % save_fixed_interval == 0:
+            if self.n_fixed and (epochs % save_fixed_interval == 0):
                 self.save_imgs(epoch, out_dir=self.fixed_dir,
                                noise=noise_vec)
 
