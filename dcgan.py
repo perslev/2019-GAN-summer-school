@@ -175,7 +175,10 @@ class DCGAN:
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axs[i, j].imshow(gen_imgs[cnt, :, :])
+                g_im = gen_imgs[cnt]
+                if g_im.min() < 0 or g_im.max() > 1:
+                    print(g_im.min(), g_im.max(), np.any(np.isnan(g_im)))
+                axs[i, j].imshow(g_im)
                 axs[i, j].axis('off')
                 cnt += 1
         fig.savefig("output_images/image_%d.png" % epoch, dpi=170)
