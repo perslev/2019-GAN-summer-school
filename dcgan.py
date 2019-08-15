@@ -79,12 +79,12 @@ class DCGAN:
         model.add(BatchNormalization(momentum=0.8))
         model.add(UpSampling2D())
 
-        model.add(Conv2D(128, kernel_size=3, padding="same"))
+        model.add(Conv2D(256, kernel_size=3, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
         model.add(UpSampling2D())
 
-        model.add(Conv2D(128, kernel_size=3, padding="same"))
+        model.add(Conv2D(256, kernel_size=3, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
 
@@ -187,7 +187,7 @@ class DCGAN:
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch, out_dir=self.image_dir)
-            if self.n_fixed and epochs % save_fixed_interval == 0:
+            if self.n_fixed and (epoch % save_fixed_interval == 0):
                 self.save_imgs(epoch, out_dir=self.fixed_dir,
                                noise=noise_vec)
 
@@ -210,8 +210,12 @@ class DCGAN:
                 g_im = gen_imgs[cnt]
                 if g_im.min() < 0 or g_im.max() > 1:
                     print(g_im.min(), g_im.max(), np.any(np.isnan(g_im)))
-                axs[i, j].imshow(g_im)
-                axs[i, j].axis('off')
+                if r == 1:
+                    axs[j].imshow(g_im)
+                    axs[j].axis('off')
+                else:
+                    axs[i, j].imshow(g_im)
+                    axs[i, j].axis('off')
                 cnt += 1
-        fig.savefig(f"{out_dir}/image_%d.png" % epoch, dpi=170)
+        fig.savefig(f"{out_dir}/image_%s.png" % str(epoch).zfill(7), dpi=170)
         plt.close(fig)
