@@ -29,7 +29,7 @@ class DCGAN:
         self.image_dir = os.path.join(out_dir, "random_samples")
         self.fixed_dir = os.path.join(out_dir, "fixed_samples")
         to_make = (self.out_dir, self.image_dir, self.fixed_dir)
-        for dir_ in (to_make if n_fixed else to_make[:-1]):
+        for dir_ in to_make if n_fixed else to_make[:-1]:
             if not os.path.exists(to_make):
                 os.mkdir(dir_)
 
@@ -88,9 +88,9 @@ class DCGAN:
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
 
-        # model.add(Conv2D(128, kernel_size=3, padding="same"))
-        # model.add(LeakyReLU(alpha=0.2))
-        # model.add(BatchNormalization(momentum=0.8))
+        model.add(Conv2D(128, kernel_size=3, padding="same"))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
 
         model.add(Conv2D(64, kernel_size=3, padding="same"))
         model.add(LeakyReLU(alpha=0.2))
